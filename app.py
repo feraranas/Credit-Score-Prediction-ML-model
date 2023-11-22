@@ -8,10 +8,10 @@ from streamlit_lottie import st_lottie
 # # ////////////////////////
 # IMPORTING THE MODELS
 # # ////////////////////////
-scaler = joblib.load('./models/scaler_model.joblib')
-logistic_regression = joblib.load('./models/logistic_regression_model.joblib')
-random_forest = joblib.load('./models/random_forest_model.joblib')
-knn = joblib.load('./models/knn_model.joblib')
+scaler = joblib.load("./models/scaler_model.joblib")
+logistic_regression = joblib.load("./models/logistic_regression_model.joblib")
+random_forest = joblib.load("./models/random_forest_model.joblib")
+knn = joblib.load("./models/knn_model.joblib")
 
 # # /////////////////////////////////////
 # # PIPELINE FUNCTION TO PREPROCESS DATA
@@ -19,11 +19,11 @@ knn = joblib.load('./models/knn_model.joblib')
 
 
 def pipeline(data):
-    predict_vals_2d = np.array(data).reshape(
-        1, -1)  # Reshape the data to a 2D array
+    predict_vals_2d = np.array(data).reshape(1, -1)  # Reshape the data to a 2D array
     # Scaler: Fit and transform the values
     scaled_data = scaler.transform(predict_vals_2d)
     return scaled_data
+
 
 # # /////////////////////////////////////
 # # GLOBAL VARIABLES
@@ -44,7 +44,7 @@ def pipeline(data):
 # }
 
 
-st.title('Increase Your Credit Loan')
+st.title("Increase Your Credit Loan")
 
 # # ////////////////////////
 # # FORM
@@ -147,242 +147,324 @@ st.title('Increase Your Credit Loan')
 
 
 ################################################################################################################################################################################################################################################
-if 'current_step' not in st.session_state:
-    st.session_state['current_step'] = 1
+if "current_step" not in st.session_state:
+    st.session_state["current_step"] = 1
 
-if 'age' not in st.session_state:
-    st.session_state['age'] = 0
-if 'income' not in st.session_state:
-    st.session_state['income'] = 0
-if 'month' not in st.session_state:
-    st.session_state['month'] = 0
-if 'num_bank_accounts' not in st.session_state:
-    st.session_state['num_bank_accounts'] = 0
-if 'num_credit_card' not in st.session_state:
-    st.session_state['num_credit_card'] = 0
-if 'last_interest_rate' not in st.session_state:
-    st.session_state['last_interest_rate'] = 0
-if 'Num_of_Loan' not in st.session_state:
-    st.session_state['Num_of_Loan'] = 0
-if 'month_delay' not in st.session_state:
-    st.session_state['month_delay'] = 0
-if 'payments_delay' not in st.session_state:
-    st.session_state['payments_delay'] = 0
-if 'credit_mix' not in st.session_state:
-    st.session_state['credit_mix'] = 0
-if 'Credit_History_Age' not in st.session_state:
-    st.session_state['Credit_History_Age'] = 0
-if 'Monthly_Balance' not in st.session_state:
-    st.session_state['Monthly_Balance'] = 0
+if "age" not in st.session_state:
+    st.session_state["age"] = 0
+if "income" not in st.session_state:
+    st.session_state["income"] = 0
+if "month" not in st.session_state:
+    st.session_state["month"] = 0
+if "num_bank_accounts" not in st.session_state:
+    st.session_state["num_bank_accounts"] = 0
+if "num_credit_card" not in st.session_state:
+    st.session_state["num_credit_card"] = 0
+if "last_interest_rate" not in st.session_state:
+    st.session_state["last_interest_rate"] = 0
+if "Num_of_Loan" not in st.session_state:
+    st.session_state["Num_of_Loan"] = 0
+if "month_delay" not in st.session_state:
+    st.session_state["month_delay"] = 0
+if "payments_delay" not in st.session_state:
+    st.session_state["payments_delay"] = 0
+if "credit_mix" not in st.session_state:
+    st.session_state["credit_mix"] = 0
+if "Credit_History_Age" not in st.session_state:
+    st.session_state["Credit_History_Age"] = 0
+if "Monthly_Balance" not in st.session_state:
+    st.session_state["Monthly_Balance"] = 0
 
 
 def set_page_view(page):
-    st.session_state['current_step'] = 1
+    st.session_state["current_step"] = 1
+
+
 #     st.session_state['queued_file'] = None
 #     st.session_state['current_view'] = page
 
 
 def set_form_step(parameter_key, parameter_value, action, step=None):
-    if action == 'Next':
-        st.session_state['current_step'] = st.session_state['current_step'] + 1
-    if action == 'Back':
-        st.session_state['current_step'] = st.session_state['current_step'] - 1
-    if action == 'Jump':
-        st.session_state['current_step'] = step
+    if action == "Next":
+        st.session_state["current_step"] = st.session_state["current_step"] + 1
+    if action == "Back":
+        st.session_state["current_step"] = st.session_state["current_step"] - 1
+    if action == "Jump":
+        st.session_state["current_step"] = step
+
 
 ##### wizard functions ####
 
 
 def wizard_form_header():
-    st.caption('Fill the input and click next.')
-#     sf_header_cols = st.columns([1,1.75,1])
+    st.caption("Fill the input and click next.")
+    #     sf_header_cols = st.columns([1,1.75,1])
 
-#     with sf_header_cols[1]:
-#         st.subheader('Fill your data for our credit model')
+    #     with sf_header_cols[1]:
+    #         st.subheader('Fill your data for our credit model')
 
     # determines button color which should be red when user is on that given step
-    age_type = 'primary' if st.session_state['current_step'] == 1 else 'secondary'
-    income_type = 'primary' if st.session_state['current_step'] == 2 else 'secondary'
-    month_type = 'primary' if st.session_state['current_step'] == 3 else 'secondary'
-    bank_accounts_type = 'primary' if st.session_state['current_step'] == 4 else 'secondary'
+    age_type = "primary" if st.session_state["current_step"] == 1 else "secondary"
+    income_type = "primary" if st.session_state["current_step"] == 2 else "secondary"
+    month_type = "primary" if st.session_state["current_step"] == 3 else "secondary"
+    bank_accounts_type = (
+        "primary" if st.session_state["current_step"] == 4 else "secondary"
+    )
 
-    credit_cards_type = 'primary' if st.session_state['current_step'] == 5 else 'secondary'
-    interest_rate_type = 'primary' if st.session_state['current_step'] == 6 else 'secondary'
-    number_loans_type = 'primary' if st.session_state['current_step'] == 7 else 'secondary'
-    max_delay_type = 'primary' if st.session_state['current_step'] == 8 else 'secondary'
+    credit_cards_type = (
+        "primary" if st.session_state["current_step"] == 5 else "secondary"
+    )
+    interest_rate_type = (
+        "primary" if st.session_state["current_step"] == 6 else "secondary"
+    )
+    number_loans_type = (
+        "primary" if st.session_state["current_step"] == 7 else "secondary"
+    )
+    max_delay_type = "primary" if st.session_state["current_step"] == 8 else "secondary"
 
-    num_delayed_payments_type = 'primary' if st.session_state['current_step'] == 9 else 'secondary'
-    credit_mix_type = 'primary' if st.session_state['current_step'] == 10 else 'secondary'
-    credit_history_type = 'primary' if st.session_state['current_step'] == 11 else 'secondary'
-    monthly_balance_type = 'primary' if st.session_state['current_step'] == 12 else 'secondary'
+    num_delayed_payments_type = (
+        "primary" if st.session_state["current_step"] == 9 else "secondary"
+    )
+    credit_mix_type = (
+        "primary" if st.session_state["current_step"] == 10 else "secondary"
+    )
+    credit_history_type = (
+        "primary" if st.session_state["current_step"] == 11 else "secondary"
+    )
+    monthly_balance_type = (
+        "primary" if st.session_state["current_step"] == 12 else "secondary"
+    )
 
-    step_cols1 = st.columns([.5, .85, .85, .85, .85, .5])
-    step_cols2 = st.columns([.5, .85, .85, .85, .85, .5])
-    step_cols3 = st.columns([.5, .85, .85, .85, .85, .5])
+    step_cols1 = st.columns([0.5, 0.85, 0.85, 0.85, 0.85, 0.5])
+    step_cols2 = st.columns([0.5, 0.85, 0.85, 0.85, 0.85, 0.5])
+    step_cols3 = st.columns([0.5, 0.85, 0.85, 0.85, 0.85, 0.5])
 
-    step_cols1[1].button('\tAge', on_click=set_form_step,
-                         args=['Jump', 1], type=age_type)
-    step_cols1[2].button('\tIncome', on_click=set_form_step,
-                         args=['Jump', 2], type=income_type)
-    step_cols1[3].button('\tMonth', on_click=set_form_step,
-                         args=['Jump', 3], type=month_type)
-    step_cols1[4].button('Bank Accounts', on_click=set_form_step, args=[
-                         'Jump', 4], type=bank_accounts_type)
+    step_cols1[1].button(
+        "\tAge", on_click=set_form_step, args=["Jump", 1], type=age_type
+    )
+    step_cols1[2].button(
+        "\tIncome", on_click=set_form_step, args=["Jump", 2], type=income_type
+    )
+    step_cols1[3].button(
+        "\tMonth", on_click=set_form_step, args=["Jump", 3], type=month_type
+    )
+    step_cols1[4].button(
+        "Bank Accounts",
+        on_click=set_form_step,
+        args=["Jump", 4],
+        type=bank_accounts_type,
+    )
 
-    step_cols2[1].button('Credit Cards', on_click=set_form_step, args=[
-                         'Jump', 5], type=credit_cards_type)
-    step_cols2[2].button('Interest Rate', on_click=set_form_step, args=[
-                         'Jump', 6], type=interest_rate_type)
-    step_cols2[3].button('Number of Loans', on_click=set_form_step, args=[
-                         'Jump', 7], type=number_loans_type)
-    step_cols2[4].button('Maximum Delay', on_click=set_form_step, args=[
-                         'Jump', 8], type=max_delay_type)
+    step_cols2[1].button(
+        "Credit Cards", on_click=set_form_step, args=["Jump", 5], type=credit_cards_type
+    )
+    step_cols2[2].button(
+        "Interest Rate",
+        on_click=set_form_step,
+        args=["Jump", 6],
+        type=interest_rate_type,
+    )
+    step_cols2[3].button(
+        "Number of Loans",
+        on_click=set_form_step,
+        args=["Jump", 7],
+        type=number_loans_type,
+    )
+    step_cols2[4].button(
+        "Maximum Delay", on_click=set_form_step, args=["Jump", 8], type=max_delay_type
+    )
 
-    step_cols3[1].button('Number of Delayed Payments', on_click=set_form_step, args=[
-                         'Jump', 9], type=num_delayed_payments_type)
-    step_cols3[2].button('Credit Mix', on_click=set_form_step, args=[
-                         'Jump', 10], type=credit_mix_type)
-    step_cols3[3].button('Credit History Age', on_click=set_form_step, args=[
-                         'Jump', 11], type=credit_history_type)
-    step_cols3[4].button('Monthly Balance', on_click=set_form_step, args=[
-                         'Jump', 12], type=monthly_balance_type)
+    step_cols3[1].button(
+        "Number of Delayed Payments",
+        on_click=set_form_step,
+        args=["Jump", 9],
+        type=num_delayed_payments_type,
+    )
+    step_cols3[2].button(
+        "Credit Mix", on_click=set_form_step, args=["Jump", 10], type=credit_mix_type
+    )
+    step_cols3[3].button(
+        "Credit History Age",
+        on_click=set_form_step,
+        args=["Jump", 11],
+        type=credit_history_type,
+    )
+    step_cols3[4].button(
+        "Monthly Balance",
+        on_click=set_form_step,
+        args=["Jump", 12],
+        type=monthly_balance_type,
+    )
+
 
 ### Replace Wizard Form Body with this ###
 
 
 def wizard_form_body():
     ###### Step 1: Age ######
-    if st.session_state['current_step'] == 1:
-        st.markdown('\n')
-        st.markdown('\n')
-        age = st.number_input('Type your age', value=age, on_change=update_age)
+    if st.session_state["current_step"] == 1:
+        st.markdown("\n")
+        st.markdown("\n")
+        age = st.number_input("Type your age", value=age, on_change=update_age)
 
     ###### Step 2: Income ######
-    if st.session_state['current_step'] == 2:
-        st.markdown('\n')
-        st.markdown('\n')
+    if st.session_state["current_step"] == 2:
+        st.markdown("\n")
+        st.markdown("\n")
         income = st.number_input(
-            'Type your monthly income', value=income, on_change=update_income)
+            "Type your monthly income", value=income, on_change=update_income
+        )
 
     ###### Step 3: Month ######
-    if st.session_state['current_step'] == 3:
-        st.markdown('\n')
-        st.markdown('\n')
-        months = ['January', 'February', 'March', 'April', 'May', 'June',
-                  'July', 'August', 'September', 'October', 'November', 'December']
+    if st.session_state["current_step"] == 3:
+        st.markdown("\n")
+        st.markdown("\n")
+        months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ]
         month_options = st.selectbox(
-            'Month of credit solicitude:', options=months, index=0, on_change=update_month)
-        if month_options == 'January':
-            month = '1'
-        elif month_options == 'February':
-            month = '2'
-        elif month_options == 'March':
-            month = '3'
-        elif month_options == 'April':
-            month = '4'
-        elif month_options == 'May':
-            month = '5'
-        elif month_options == 'June':
-            month = '6'
-        elif month_options == 'July':
-            month = '7'
-        elif month_options == 'August':
-            month = '8'
-        elif month_options == 'September':
-            month = '9'
-        elif month_options == 'October':
-            month = '10'
-        elif month_options == 'November':
-            month = '11'
-        elif month_options == 'December':
-            month = '12'
+            "Month of credit solicitude:",
+            options=months,
+            index=0,
+            on_change=update_month,
+        )
+        if month_options == "January":
+            month = "1"
+        elif month_options == "February":
+            month = "2"
+        elif month_options == "March":
+            month = "3"
+        elif month_options == "April":
+            month = "4"
+        elif month_options == "May":
+            month = "5"
+        elif month_options == "June":
+            month = "6"
+        elif month_options == "July":
+            month = "7"
+        elif month_options == "August":
+            month = "8"
+        elif month_options == "September":
+            month = "9"
+        elif month_options == "October":
+            month = "10"
+        elif month_options == "November":
+            month = "11"
+        elif month_options == "December":
+            month = "12"
 
     ###### Step 4: Bank Accounts ######
-    if st.session_state['current_step'] == 4:
-        st.markdown('\n')
-        st.markdown('\n')
+    if st.session_state["current_step"] == 4:
+        st.markdown("\n")
+        st.markdown("\n")
         num_bank_accounts = st.number_input(
-            'Type the number of distinct bank accounts that you have:')
+            "Type the number of distinct bank accounts that you have:"
+        )
 
     ###### Step 5: Credit Cards ######
-    if st.session_state['current_step'] == 5:
-        st.markdown('\n')
-        st.markdown('\n')
+    if st.session_state["current_step"] == 5:
+        st.markdown("\n")
+        st.markdown("\n")
         num_credit_card = st.number_input(
-            'Type the number of distinct credit cards that you have:')
+            "Type the number of distinct credit cards that you have:"
+        )
 
     ###### Step 6: Interest Rate ######
-    if st.session_state['current_step'] == 6:
-        st.markdown('\n')
-        st.markdown('\n')
+    if st.session_state["current_step"] == 6:
+        st.markdown("\n")
+        st.markdown("\n")
         last_interest_rate = st.number_input(
-            'Type the last interest rate that you paid:')
+            "Type the last interest rate that you paid:"
+        )
 
     ###### Step 7: Number of loans ######
-    if st.session_state['current_step'] == 7:
-        st.markdown('\n')
-        st.markdown('\n')
-        Num_of_Loan = st.number_input(
-            'Type how many loans have you had in the past:')
+    if st.session_state["current_step"] == 7:
+        st.markdown("\n")
+        st.markdown("\n")
+        Num_of_Loan = st.number_input("Type how many loans have you had in the past:")
 
     ###### Step 8: Maximum month delay ######
-    if st.session_state['current_step'] == 8:
-        st.markdown('\n')
-        st.markdown('\n')
+    if st.session_state["current_step"] == 8:
+        st.markdown("\n")
+        st.markdown("\n")
         month_delay = st.number_input(
-            'Type the maximum month delay you have had from payment due date:')
+            "Type the maximum month delay you have had from payment due date:"
+        )
 
     ###### Step 9: Maximum payments delay ######
-    if st.session_state['current_step'] == 9:
-        st.markdown('\n')
-        st.markdown('\n')
+    if st.session_state["current_step"] == 9:
+        st.markdown("\n")
+        st.markdown("\n")
         payments_delay = st.number_input(
-            'Type the maximum payments delay you have had:')
+            "Type the maximum payments delay you have had:"
+        )
 
     ###### Step 10: Credit Mix ######
-    if st.session_state['current_step'] == 10:
-        st.markdown('\n')
-        st.markdown('\n')
-        credit_mix_options = ['Good', 'Standard', 'Bad']
+    if st.session_state["current_step"] == 10:
+        st.markdown("\n")
+        st.markdown("\n")
+        credit_mix_options = ["Good", "Standard", "Bad"]
         credit_mix_selection = st.selectbox(
-            'What is your credit mix status?', options=credit_mix_options, index=0)
-        if credit_mix_selection == 'Good':
-            credit_mix = '0'
-        elif credit_mix_selection == 'Standard':
-            credit_mix = '1'
-        elif credit_mix_selection == 'Bad':
-            credit_mix = '2'
+            "What is your credit mix status?", options=credit_mix_options, index=0
+        )
+        if credit_mix_selection == "Good":
+            credit_mix = "0"
+        elif credit_mix_selection == "Standard":
+            credit_mix = "1"
+        elif credit_mix_selection == "Bad":
+            credit_mix = "2"
 
     ###### Step 11: Maximum payments delay ######
-    if st.session_state['current_step'] == 11:
-        st.markdown('\n')
-        st.markdown('\n')
+    if st.session_state["current_step"] == 11:
+        st.markdown("\n")
+        st.markdown("\n")
         Credit_History_Age = st.number_input(
-            'Type the number of years you have had a credit history:')
+            "Type the number of years you have had a credit history:"
+        )
 
     ###### Step 12: Monthly Balance ######
-    if st.session_state['current_step'] == 11:
-        st.markdown('\n')
-        st.markdown('\n')
-        Monthly_Balance = st.number_input('Type your last monthly balance:')
+    if st.session_state["current_step"] == 11:
+        st.markdown("\n")
+        st.markdown("\n")
+        Monthly_Balance = st.number_input("Type your last monthly balance:")
 
-    st.markdown('---')
+    st.markdown("---")
 
     form_footer_container = st.empty()
     with form_footer_container.container():
-
-        disable_back_button = True if st.session_state['current_step'] == 1 else False
-        disable_next_button = True if st.session_state['current_step'] == 12 else False
+        disable_back_button = True if st.session_state["current_step"] == 1 else False
+        disable_next_button = True if st.session_state["current_step"] == 12 else False
 
         form_footer_cols = st.columns([5, 1, 1, 1.75])
 
-        form_footer_cols[1].button('Back', on_click=set_form_step, args=[
-                                   'Back'], disabled=disable_back_button)
-        form_footer_cols[2].button('Next', on_click=set_form_step, args=[
-                                   'Next', ], disabled=disable_next_button)
+        form_footer_cols[1].button(
+            "Back", on_click=set_form_step, args=["Back"], disabled=disable_back_button
+        )
+        form_footer_cols[2].button(
+            "Next",
+            on_click=set_form_step,
+            args=[
+                "Next",
+            ],
+            disabled=disable_next_button,
+        )
 
-        file_ready = False if st.session_state['current_step'] == 12 is not None else True
-        load_file = form_footer_cols[3].button('📤 Submit', disabled=file_ready)
+        file_ready = (
+            False if st.session_state["current_step"] == 12 is not None else True
+        )
+        load_file = form_footer_cols[3].button("📤 Submit", disabled=file_ready)
+
 
 #     if load_file:
 #         source_file_container.empty()
@@ -402,7 +484,7 @@ def wizard_form_body():
 
 
 def render_wizard_view():
-    with st.expander('Fill your data for our credit model', expanded=True):
+    with st.expander("Fill your data for our credit model", expanded=True):
         wizard_form_header()
         wizard_form_body()
 
