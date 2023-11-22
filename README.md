@@ -1,3 +1,1 @@
-**Credit Score prediction model**
-
-Streamlit
+** Credit Score prediction model **
