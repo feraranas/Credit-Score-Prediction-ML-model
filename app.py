@@ -1,8 +1,8 @@
-import streamlit as st
 import joblib
-import requests
-from sklearn.preprocessing import StandardScaler
 import numpy as np
+import requests
+import streamlit as st
+from sklearn.preprocessing import StandardScaler
 from streamlit_lottie import st_lottie
 
 # # ////////////////////////
