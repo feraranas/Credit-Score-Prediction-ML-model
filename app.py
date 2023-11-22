@@ -21,7 +21,7 @@ knn = joblib.load("./models/knn_model.joblib")
 def pipeline(data):
     """
 
-    :param data: 
+    :param data:
 
     """
     predict_vals_2d = np.array(data).reshape(1, -1)  # Reshape the data to a 2D array
@@ -184,7 +184,7 @@ if "Monthly_Balance" not in st.session_state:
 def set_page_view(page):
     """
 
-    :param page: 
+    :param page:
 
     """
     st.session_state["current_step"] = 1
@@ -197,9 +197,9 @@ def set_page_view(page):
 def set_form_step(parameter_key, parameter_value, action, step=None):
     """
 
-    :param parameter_key: 
-    :param parameter_value: 
-    :param action: 
+    :param parameter_key:
+    :param parameter_value:
+    :param action:
     :param step:  (Default value = None)
 
     """
