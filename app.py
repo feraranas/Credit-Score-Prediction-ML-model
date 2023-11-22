@@ -19,6 +19,11 @@ knn = joblib.load("./models/knn_model.joblib")
 
 
 def pipeline(data):
+    """
+
+    :param data: 
+
+    """
     predict_vals_2d = np.array(data).reshape(1, -1)  # Reshape the data to a 2D array
     # Scaler: Fit and transform the values
     scaled_data = scaler.transform(predict_vals_2d)
@@ -177,6 +182,11 @@ if "Monthly_Balance" not in st.session_state:
 
 
 def set_page_view(page):
+    """
+
+    :param page: 
+
+    """
     st.session_state["current_step"] = 1
 
 
@@ -185,6 +195,14 @@ def set_page_view(page):
 
 
 def set_form_step(parameter_key, parameter_value, action, step=None):
+    """
+
+    :param parameter_key: 
+    :param parameter_value: 
+    :param action: 
+    :param step:  (Default value = None)
+
+    """
     if action == "Next":
         st.session_state["current_step"] = st.session_state["current_step"] + 1
     if action == "Back":
@@ -197,6 +215,7 @@ def set_form_step(parameter_key, parameter_value, action, step=None):
 
 
 def wizard_form_header():
+    """ """
     st.caption("Fill the input and click next.")
     #     sf_header_cols = st.columns([1,1.75,1])
 
@@ -301,6 +320,7 @@ def wizard_form_header():
 
 
 def wizard_form_body():
+    """ """
     ###### Step 1: Age ######
     if st.session_state["current_step"] == 1:
         st.markdown("\n")
@@ -484,6 +504,7 @@ def wizard_form_body():
 
 
 def render_wizard_view():
+    """ """
     with st.expander("Fill your data for our credit model", expanded=True):
         wizard_form_header()
         wizard_form_body()
