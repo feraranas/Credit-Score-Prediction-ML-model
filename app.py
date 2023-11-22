@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 import joblib
 import requests
@@ -153,7 +154,6 @@ st.title('Increase Your Credit Loan')
 ################################################################################################################################################################################################################################################
 if 'current_step' not in st.session_state:
     st.session_state['current_step'] = 1
-
 if 'age' not in st.session_state:
     st.session_state['age'] = 0
 if 'income' not in st.session_state:
@@ -181,10 +181,8 @@ if 'Monthly_Balance' not in st.session_state:
 
 def update_age():
     st.session_state.age = st.session_state._age
-
 def update_income():
     st.session_state.income = st.session_state._income
-    
 def update_month():
         if st.session_state._month == 'January':
             st.session_state.month = '1'
@@ -209,8 +207,25 @@ def update_month():
         elif st.session_state._month == 'November':
             st.session_state.month = '11'
         elif st.session_state._month == 'December':
-            st.session_state.month = '12'  
-
+            st.session_state.month = '12'
+def update_bank_accounts():
+    st.session_state.num_bank_accounts = st.session_state._num_bank_accounts
+def update_credit_card():
+    st.session_state.num_credit_card = st.session_state._num_credit_card
+def update_last_interest_rate():
+    st.session_state.last_interest_rate = st.session_state._last_interest_rate
+def update_Num_of_Loan():
+    st.session_state.Num_of_Loan = st.session_state._Num_of_Loan
+def update_month_delay():
+    st.session_state.month_delay = st.session_state._month_delay
+def update_payments_delay():
+    st.session_state.payments_delay = st.session_state._payments_delay
+def update_Credit_History_Age():
+    st.session_state.Credit_History_Age = st.session_state._Credit_History_Age
+def update_payments_delay():
+    st.session_state.payments_delay = st.session_state._payments_delay
+def update_Monthly_Balance():
+    st.session_state.Monthly_Balance = st.session_state._Monthly_Balance
 def update_credit_mix():
         if st.session_state._credit_mix == 'Good':
           st.session_state.credit_mix = '0'
@@ -218,7 +233,19 @@ def update_credit_mix():
           st.session_state.credit_mix = '1'
         elif st.session_state._credit_mix == 'Bad':
           st.session_state.credit_mix = '2'  
-
+def simulate_load_snowflake_table():
+    success = False
+    response_message = ''
+    num_rows = 0     
+    
+    try:
+        success = True        
+        response_message = 'Success'
+        num_rows = 2
+    except Exception as e:
+        response_message = e
+        
+    return success,response_message,num_rows
 def set_page_view(page):
     st.session_state['current_step'] = 1 
 #     st.session_state['queued_file'] = None
@@ -284,32 +311,32 @@ def wizard_form_body():
         st.markdown('\n')
         st.markdown('\n')
      #    age = st.number_input('Type your age', value = age, on_change = update_age)
-        st.number_input('Type your age', key = '_age', value = st.session_state['age'], on_change = update_age)
+        st.number_input('Type your age', key = '_age', value = st.session_state.age, on_change = update_age)
      
     ###### Step 2: Income ######
     if st.session_state['current_step'] == 2:
         st.markdown('\n')
         st.markdown('\n')
-        st.number_input('Type your monthly income', key = '_income', value = st.session_state.income, on_change = update_income)        
+        st.number_input('Type your monthly income', key = '_income', value = st.session_state.income, on_change = update_income)
 
     ###### Step 3: Month ######            
     if st.session_state['current_step'] == 3:
         st.markdown('\n')
         st.markdown('\n')
         months = ['January','February','March','April','May','June','July','August','September','October','November','December']
-        st.selectbox('Month of credit solicitude:', key = 'numeric_month', options = months , index = 0, on_change = update_month)
+        st.selectbox('Month of credit solicitude:', key = '_month', options = months , index = 0, on_change = update_month)
 
     ###### Step 4: Bank Accounts ######
     if st.session_state['current_step'] == 4:
         st.markdown('\n')
         st.markdown('\n')                           
-        st.number_input('Type the number of distinct bank accounts that you have:', key = '_bank_accounts', value = st.session_state.num_bank_accounts, on_change = update_bank_accounts)     
+        st.number_input('Type the number of distinct bank accounts that you have:', key = '_num_bank_accounts', value = st.session_state.num_bank_accounts, on_change = update_bank_accounts)     
 
     ###### Step 5: Credit Cards ######
     if st.session_state['current_step'] == 5:
         st.markdown('\n')
         st.markdown('\n')                                
-        st.number_input('Type the number of distinct credit cards that you have:', key = '_credit_card', value = st.session_state.num_credit_card, on_change = update_credit_card)                
+        st.number_input('Type the number of distinct credit cards that you have:', key = '_num_credit_card', value = st.session_state.num_credit_card, on_change = update_credit_card)                
 
     ###### Step 6: Interest Rate ######
     if st.session_state['current_step'] == 6:
@@ -367,24 +394,37 @@ def wizard_form_body():
         form_footer_cols[1].button('Back',on_click=set_form_step,args=['Back'],disabled=disable_back_button)
         form_footer_cols[2].button('Next',on_click=set_form_step,args=['Next', ],disabled=disable_next_button)
     
-        file_ready = False if st.session_state['current_step'] == 12 != None else True
-        load_file = form_footer_cols[3].button('📤 Submit',disabled=file_ready)
+        submit_ready = False if st.session_state['current_step'] == 12 != None else True
+        submit = form_footer_cols[3].button('📤 Submit',disabled=submit_ready)
          
-#     if load_file:
-#         source_file_container.empty()
-#         form_footer_container.empty()        
-#         with st.spinner('Loading file ...'):  
-#             time.sleep(3)                  
-#             success, response_message, num_rows = simulate_load_snowflake_table()
-#             file_name = st.session_state['queued_file'].name
-
-#             if success:                                                                                            
-#                 st.success(f'✅  Successfully loaded {num_rows} rows from file {file_name}.')                    
-#             else:                         
-#                 st.error(f'❌  Failed to load {num_rows} rows from file {file_name}.')
+    if submit:
+        data = pipeline([
+            st.session_state.age,
+            st.session_state.income,
+            st.session_state.month,
+            st.session_state.num_bank_accounts,
+            st.session_state.num_credit_card,
+            st.session_state.last_interest_rate,
+            st.session_state.Num_of_Loan,
+            st.session_state.month_delay,
+            st.session_state.payments_delay,
+            st.session_state.credit_mix,
+            st.session_state.Credit_History_Age,
+            st.session_state.Monthly_Balance,
+        ])
+        print(data)
+        result = logistic_regression.predict(data)
+        print("0 -> yes | 1 -> no: ", result)
+        with st.spinner('Loading your data to the model ...'):
+            time.sleep(3)                  
+            success, response_message, num_rows = simulate_load_snowflake_table()
+            if success:                                                                                            
+                st.success(f'✅  Successfully loaded data to the model. You can go back to the chatbot.')                    
+            else:                         
+                st.error(f'❌  Failed to load data to the model. Please try again.')
                                 
-#             ok_cols = st.columns(8)
-#             ok_cols[0].button('OK',type='primary',on_click=set_page_view,args=['Grid'],use_container_width=True)     
+            ok_cols = st.columns(8)
+            ok_cols[0].button('OK',type='primary',on_click=set_page_view,args=['Grid'],use_container_width=True)     
 
 
 def render_wizard_view():
