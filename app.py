@@ -23,7 +23,7 @@ knn = joblib.load("./models/knn_model.joblib")
 def pipeline(data):
     """
 
-    :param data: 
+    :param data:
 
     """
     predict_vals_2d = np.array(data).reshape(1, -1)  # Reshape the data to a 2D array
@@ -321,7 +321,7 @@ def simulate_load_snowflake_table():
 def set_page_view(page):
     """
 
-    :param page: 
+    :param page:
 
     """
     st.session_state["current_step"] = 1
@@ -338,7 +338,7 @@ def update_displayName():
 def set_form_step(action, step=None):
     """
 
-    :param action: 
+    :param action:
     :param step:  (Default value = None)
 
     """
