@@ -20,6 +20,11 @@ knn = joblib.load("./models/knn_model.joblib")
 
 
 def pipeline(data):
+    """
+
+    :param data: 
+
+    """
     predict_vals_2d = np.array(data).reshape(1, -1)  # Reshape the data to a 2D array
     # Scaler: Fit and transform the values
     scaled_data = scaler.transform(predict_vals_2d)
@@ -185,6 +190,7 @@ if "next_disabled" not in st.session_state:
 
 
 def update_month():
+    """ """
     st.session_state.age_disabled = False
     st.session_state.next_disabled = False
 
@@ -215,54 +221,63 @@ def update_month():
 
 
 def update_age():
+    """ """
     st.session_state.age = st.session_state._age
     st.session_state.income_disabled = False
     st.session_state.next_disabled = False
 
 
 def update_income():
+    """ """
     st.session_state.income = st.session_state._income
     st.session_state.num_bank_accounts_disabled = False
     st.session_state.next_disabled = False
 
 
 def update_bank_accounts():
+    """ """
     st.session_state.num_bank_accounts = st.session_state._num_bank_accounts
     st.session_state.num_credit_card_disabled = False
     st.session_state.next_disabled = False
 
 
 def update_credit_card():
+    """ """
     st.session_state.num_credit_card = st.session_state._num_credit_card
     st.session_state.last_interest_rate_disabled = False
     st.session_state.next_disabled = False
 
 
 def update_last_interest_rate():
+    """ """
     st.session_state.last_interest_rate = st.session_state._last_interest_rate
     st.session_state.Num_of_Loan_disabled = False
     st.session_state.next_disabled = False
 
 
 def update_Num_of_Loan():
+    """ """
     st.session_state.Num_of_Loan = st.session_state._Num_of_Loan
     st.session_state.month_delay_disabled = False
     st.session_state.next_disabled = False
 
 
 def update_month_delay():
+    """ """
     st.session_state.month_delay = st.session_state._month_delay
     st.session_state.payments_delay_disabled = False
     st.session_state.next_disabled = False
 
 
 def update_payments_delay():
+    """ """
     st.session_state.payments_delay = st.session_state._payments_delay
     st.session_state.credit_mix_disabled = False
     st.session_state.next_disabled = False
 
 
 def update_credit_mix():
+    """ """
     st.session_state.next_disabled = False
     st.session_state.Credit_History_Age_disabled = False
     if st.session_state._credit_mix == "Good":
@@ -274,17 +289,20 @@ def update_credit_mix():
 
 
 def update_Credit_History_Age():
+    """ """
     st.session_state.Credit_History_Age = st.session_state._Credit_History_Age
     st.session_state.Monthly_Balance_disabled = False
     st.session_state.next_disabled = False
 
 
 def update_Monthly_Balance():
+    """ """
     st.session_state.Monthly_Balance = st.session_state._Monthly_Balance
     st.session_state.next_disabled = False
 
 
 def simulate_load_snowflake_table():
+    """ """
     success = False
     response_message = ""
     num_rows = 0
@@ -300,10 +318,16 @@ def simulate_load_snowflake_table():
 
 
 def set_page_view(page):
+    """
+
+    :param page: 
+
+    """
     st.session_state["current_step"] = 1
 
 
 def update_displayName():
+    """ """
     st.session_state.displayName = st.session_state._displayName
     st.session_state.flag = 1
     st.session_state.month_disabled = False
@@ -311,6 +335,12 @@ def update_displayName():
 
 
 def set_form_step(action, step=None):
+    """
+
+    :param action: 
+    :param step:  (Default value = None)
+
+    """
     if action == "Next":
         st.session_state["current_step"] = st.session_state["current_step"] + 1
         st.session_state.next_disabled = True
@@ -324,6 +354,7 @@ def set_form_step(action, step=None):
 
 
 def wizard_form_header():
+    """ """
     # determines button color which should be red when user is on that given step
     month_type = "primary" if st.session_state["current_step"] == 1 else "secondary"
     age_type = "primary" if st.session_state["current_step"] == 2 else "secondary"
@@ -452,6 +483,7 @@ def wizard_form_header():
 
 
 def wizard_form_body():
+    """ """
     ###### Step 1: Month ######
     if st.session_state["current_step"] == 1 and not st.session_state.month_disabled:
         # if st.session_state['current_step'] == 3:
@@ -749,6 +781,7 @@ def wizard_form_body():
 
 
 def render_wizard_view():
+    """ """
     # Text input user
     st.text_input(
         label="Type the same user of the chatbot:",
