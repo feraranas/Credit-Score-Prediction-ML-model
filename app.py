@@ -1,11 +1,10 @@
-from streamlit_lottie import st_lottie
-from streamlit_lottie import st_lottie_spinner
 import time
-import streamlit as st
+
 import joblib
-import requests
 import numpy as np
-from streamlit_lottie import st_lottie
+import requests
+import streamlit as st
+from streamlit_lottie import st_lottie, st_lottie_spinner
 
 # # ////////////////////////
 # IMPORTING THE MODELS
