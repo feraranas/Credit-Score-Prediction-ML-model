@@ -2,7 +2,6 @@ import time
 import streamlit as st
 import joblib
 import requests
-from sklearn.preprocessing import StandardScaler
 import numpy as np
 from streamlit_lottie import st_lottie
 
@@ -416,13 +415,13 @@ def wizard_form_body():
             float(st.session_state.credit_mix),
         ])
         print(data)
-        result = logistic_regression.predict(data)
+        result = knn.predict(data)
         json_data = {
                "displayName": st.session_state.displayName,
                "creditResult": True if result == 1 else False
           }
 
-        url = 'http://localhost:3000/user/credit'
+        url = 'http://158.101.21.48:3000/user/credit'
         response = requests.post(url, json=json_data)
         
 
@@ -432,9 +431,9 @@ def wizard_form_body():
             success, response_message, num_rows = simulate_load_snowflake_table()
             if success:
                 if result == 1:
-                    st.success(f'✅Congratulations we\'ve approved your credit.')     
+                    st.success(f'✅Congratulations we\'ve approved your credit. Please return to the chatbot.')     
                 else:
-                    st.error(f'❌ Unfortunately we\'ve declined your credit.')            
+                    st.error(f'❌ Unfortunately we\'ve declined your credit.  Please return to the chatbot.')            
             else:                         
                 st.error(f'❌  Failed to load data to the model. Please try again.')
                                 
