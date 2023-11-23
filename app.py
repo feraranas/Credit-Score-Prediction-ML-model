@@ -154,6 +154,8 @@ st.title('Increase Your Credit Loan')
 ################################################################################################################################################################################################################################################
 if 'current_step' not in st.session_state:
     st.session_state['current_step'] = 1
+if 'displayName' not in st.session_state:
+    st.session_state['displayName'] = ''
 if 'age' not in st.session_state:
     st.session_state['age'] = 0
 if 'income' not in st.session_state:
@@ -228,11 +230,11 @@ def update_Monthly_Balance():
     st.session_state.Monthly_Balance = st.session_state._Monthly_Balance
 def update_credit_mix():
         if st.session_state._credit_mix == 'Good':
-          st.session_state.credit_mix = '0'
+          st.session_state.credit_mix = '2'
         elif st.session_state._credit_mix == 'Standard':
           st.session_state.credit_mix = '1'
         elif st.session_state._credit_mix == 'Bad':
-          st.session_state.credit_mix = '2'  
+          st.session_state.credit_mix = '0'  
 def simulate_load_snowflake_table():
     success = False
     response_message = ''
@@ -249,7 +251,9 @@ def simulate_load_snowflake_table():
 def set_page_view(page):
     st.session_state['current_step'] = 1 
 #     st.session_state['queued_file'] = None
-#     st.session_state['current_view'] = page      
+#     st.session_state['current_view'] = page     
+def update_displayName():
+    st.session_state.displayName = st.session_state._displayName
 
 def set_form_step(action,step=None):
     if action == 'Next':
@@ -262,10 +266,7 @@ def set_form_step(action,step=None):
 ##### wizard functions ####
 def wizard_form_header():
     st.caption('Fill the input and click next.')
-#     sf_header_cols = st.columns([1,1.75,1])
-        
-#     with sf_header_cols[1]:            
-#         st.subheader('Fill your data for our credit model')
+    st.text_input(label='Type the same user of the chatbot:', value=st.session_state.displayName, key='_displayName', on_change=update_displayName)
             
     # determines button color which should be red when user is on that given step
     age_type    = 'primary' if st.session_state['current_step'] == 1 else 'secondary'
@@ -288,9 +289,9 @@ def wizard_form_header():
     step_cols2 = st.columns([.5,.85,.85,.85,.85,.5])
     step_cols3 = st.columns([.5,.85,.85,.85,.85,.5])
 
-    step_cols1[1].button('\tAge',on_click=set_form_step,args=['Jump',1],type=age_type)
-    step_cols1[2].button('\tIncome',on_click=set_form_step,args=['Jump',2],type=income_type)        
-    step_cols1[3].button('\tMonth',on_click=set_form_step,args=['Jump',3],type=month_type)      
+    step_cols1[2].button('\tAge',on_click=set_form_step,args=['Jump',1],type=age_type)
+    step_cols1[3].button('\tIncome',on_click=set_form_step,args=['Jump',2],type=income_type)        
+    step_cols1[1].button('\tMonth',on_click=set_form_step,args=['Jump',3],type=month_type)      
     step_cols1[4].button('Bank Accounts',on_click=set_form_step,args=['Jump',4],type=bank_accounts_type)
 
     step_cols2[1].button('Credit Cards',on_click=set_form_step,args=['Jump',5],type=credit_cards_type)
@@ -306,25 +307,26 @@ def wizard_form_header():
 
 ### Replace Wizard Form Body with this ###
 def wizard_form_body():
-    ###### Step 1: Age ######
+
+    ###### Step 1: Month ######            
+    if st.session_state['current_step'] == 3:
+        st.markdown('\n')
+        st.markdown('\n')
+        months = ['January','February','March','April','May','June','July','August','September','October','November','December']
+        st.selectbox('Month of credit solicitude:', key = '_month', options = months , index = 0, on_change = update_month)
+
+    ###### Step 2: Age ######
     if st.session_state['current_step'] == 1:            
         st.markdown('\n')
         st.markdown('\n')
      #    age = st.number_input('Type your age', value = age, on_change = update_age)
         st.number_input('Type your age', key = '_age', value = st.session_state.age, on_change = update_age)
      
-    ###### Step 2: Income ######
+    ###### Step 3: Income ######
     if st.session_state['current_step'] == 2:
         st.markdown('\n')
         st.markdown('\n')
         st.number_input('Type your monthly income', key = '_income', value = st.session_state.income, on_change = update_income)
-
-    ###### Step 3: Month ######            
-    if st.session_state['current_step'] == 3:
-        st.markdown('\n')
-        st.markdown('\n')
-        months = ['January','February','March','April','May','June','July','August','September','October','November','December']
-        st.selectbox('Month of credit solicitude:', key = '_month', options = months , index = 0, on_change = update_month)
 
     ###### Step 4: Bank Accounts ######
     if st.session_state['current_step'] == 4:
@@ -398,28 +400,41 @@ def wizard_form_body():
         submit = form_footer_cols[3].button('📤 Submit',disabled=submit_ready)
          
     if submit:
+     #    [9, 28, 34847.84, 2, 4, 6, 10, 3.0, 1.0, 27.250000,485.298,2]
         data = pipeline([
-            st.session_state.age,
-            st.session_state.income,
-            st.session_state.month,
-            st.session_state.num_bank_accounts,
-            st.session_state.num_credit_card,
-            st.session_state.last_interest_rate,
-            st.session_state.Num_of_Loan,
-            st.session_state.month_delay,
-            st.session_state.payments_delay,
-            st.session_state.credit_mix,
-            st.session_state.Credit_History_Age,
-            st.session_state.Monthly_Balance,
+            float(st.session_state.month),
+            float(st.session_state.age),
+            float(st.session_state.income),
+            float(st.session_state.num_bank_accounts),
+            float(st.session_state.num_credit_card),
+            float(st.session_state.last_interest_rate),
+            float(st.session_state.Num_of_Loan),
+            float(st.session_state.month_delay),
+            float(st.session_state.payments_delay),
+            float(st.session_state.Credit_History_Age),
+            float(st.session_state.Monthly_Balance),
+            float(st.session_state.credit_mix),
         ])
         print(data)
         result = logistic_regression.predict(data)
-        print("0 -> yes | 1 -> no: ", result)
+        json_data = {
+               "displayName": st.session_state.displayName,
+               "creditResult": True if result == 1 else False
+          }
+
+        url = 'http://localhost:3000/user/credit'
+        response = requests.post(url, json=json_data)
+        
+
+        print("0 -> no | 1 -> yes: ", result)
         with st.spinner('Loading your data to the model ...'):
             time.sleep(3)                  
             success, response_message, num_rows = simulate_load_snowflake_table()
-            if success:                                                                                            
-                st.success(f'✅  Successfully loaded data to the model. You can go back to the chatbot.')                    
+            if success:
+                if result == 1:
+                    st.success(f'✅Congratulations we\'ve approved your credit.')     
+                else:
+                    st.error(f'❌ Unfortunately we\'ve declined your credit.')            
             else:                         
                 st.error(f'❌  Failed to load data to the model. Please try again.')
                                 
