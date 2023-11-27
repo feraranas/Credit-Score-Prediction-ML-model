@@ -459,7 +459,7 @@ def wizard_form_body():
             float(st.session_state.credit_mix),
         ])
         print(data)
-        result = knn.predict(data)
+        result = random_forest.predict(data)
         json_data = {
                "displayName": st.session_state.displayName,
                "creditResult": True if result == 1 else False
